@@ -1,6 +1,5 @@
 package com.darkluke1111.isBuilder;
 
-import org.bukkit.Location;
 import org.bukkit.inventory.Recipe;
 
 public class AdvancedRecipe {
