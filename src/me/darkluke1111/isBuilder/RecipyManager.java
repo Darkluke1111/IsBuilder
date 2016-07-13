@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
@@ -38,6 +39,7 @@ public class RecipyManager implements Listener{
 		HandlerList.unregisterAll(this);
 	}
 	
+	@EventHandler
 	public void onCrafting(PrepareItemCraftEvent event) {
 		for(AdvancedRecipe recipe : recipies) {
 			if(recipiesAreEqual(recipe.getRecipe(),event.getRecipe())) {
