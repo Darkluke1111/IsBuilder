@@ -1,4 +1,4 @@
-package com.darkluke1111.isBuilder;
+package me.darkluke1111.isBuilder;
 
 import org.bukkit.Location;
 

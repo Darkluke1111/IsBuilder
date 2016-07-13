@@ -1,0 +1,9 @@
+name: IsBuilder
+version: 0.1
+description: Fortgeschrittene Skyblock Rezepte
+author: Darkluke1111
+main: me.darkluke1111.isBuilder.IsBuilder
+
+commands:
+
+permissions:
