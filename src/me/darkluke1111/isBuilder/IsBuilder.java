@@ -10,7 +10,7 @@ public class IsBuilder extends JavaPlugin{
 	@Override
 	public void onEnable() {
 		getConfig().options().copyDefaults(true);
-		saveResource("Lvl1.schematic", true);
+		this.saveConfig();
 		CraftingStructure.loadStructures(this);
 		rm = new RecipyManager(this);
 		rl = new RecipeLoader(this);

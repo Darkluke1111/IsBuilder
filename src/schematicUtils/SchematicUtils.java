@@ -67,7 +67,6 @@ public class SchematicUtils {
 		int offsetX = getChildTag(schematic, "WEOffsetX", IntTag.class).getValue();
 		int offsetY = getChildTag(schematic, "WEOffsetY", IntTag.class).getValue();
 		int offsetZ = getChildTag(schematic, "WEOffsetZ", IntTag.class).getValue();
-		System.out.println(offsetX + " " + offsetY + " " + offsetZ);
 		Vector offset = new Vector(offsetX, offsetY, offsetZ);
 
 		// Get blocks

@@ -13,11 +13,8 @@
     		<filtering>true</filtering>
     		<directory>${basedir}/resources</directory>
     		<includes>
-    			<include>plugin.yml</include>
-    			<include>Lvl1.schematic</include>
-    			<include>Lvl2.schematic</include>
-    			<include>Lvl3.schematic</include>
-    			<include>config.yml</include>
+    			<include>*.yml</include>
+    			<include>*.schematic</include>
     		</includes>
     	</resource>
     </resources>
