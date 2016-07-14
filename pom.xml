@@ -14,6 +14,9 @@
     		<directory>${basedir}/resources</directory>
     		<includes>
     			<include>plugin.yml</include>
+    			<include>Lvl1.schematic</include>
+    			<include>Lvl2.schematic</include>
+    			<include>Lvl3.schematic</include>
     		</includes>
     	</resource>
     </resources>

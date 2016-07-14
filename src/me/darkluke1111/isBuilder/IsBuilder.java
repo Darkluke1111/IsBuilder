@@ -1,8 +1,12 @@
 package me.darkluke1111.isBuilder;
 
+import java.io.File;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import schematicUtils.schematicUtils;
 
 public class IsBuilder extends JavaPlugin{
 	
@@ -10,6 +14,8 @@ public class IsBuilder extends JavaPlugin{
 	
 	@Override
 	public void onEnable() {
+		saveResource("Lvl1.schematic", true);
+		schematicUtils.setSaveDir(getDataFolder());
 		rm = new RecipyManager(this);
 		AdvancedRecipe r1 = new AdvancedRecipe(new ItemStack(Material.GOLD_BLOCK), new CraftingStructure(1));
 		r1.shape("SSS","SSS","SSS");
@@ -21,6 +27,7 @@ public class IsBuilder extends JavaPlugin{
 	public void onDisable() {
 		rm.destroy();
 	}
+	
 	
 
 }

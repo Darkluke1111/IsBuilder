@@ -24,15 +24,15 @@ package schematicUtils;
 public class Schematic
 {
  
-    private byte[] blocks;
+    private short[] blocks;
     private byte[] data;
     private short width;
     private short lenght;
     private short height;
  
-    public Schematic(byte[] blocks, byte[] data, short width, short lenght, short height)
+    public Schematic(short[] blocks2, byte[] data, short width, short lenght, short height)
     {
-        this.blocks = blocks;
+        this.blocks = blocks2;
         this.data = data;
         this.width = width;
         this.lenght = lenght;
@@ -42,7 +42,7 @@ public class Schematic
     /**
     * @return the blocks
     */
-    public byte[] getBlocks()
+    public short[] getBlocks()
     {
         return blocks;
     }

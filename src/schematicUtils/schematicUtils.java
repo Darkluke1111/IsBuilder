@@ -1,10 +1,10 @@
 package schematicUtils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,13 +13,18 @@ import org.jnbt.ByteArrayTag;
 import org.jnbt.CompoundTag;
 import org.jnbt.NBTInputStream;
 import org.jnbt.ShortTag;
-import org.jnbt.StringTag;
 import org.jnbt.Tag;
 
 public class schematicUtils {
+	static File savePath;
+	
+	public static void setSaveDir(File file) {
+		savePath = file;
+	}
+	
 	public static void pasteSchematic(World world, Location loc, Schematic schematic)
     {
-        byte[] blocks = schematic.getBlocks();
+        short[] blocks = schematic.getBlocks();
         byte[] blockData = schematic.getData();
  
         short length = schematic.getLenght();
@@ -37,32 +42,55 @@ public class schematicUtils {
         }
     }
  
-    public static Schematic loadSchematic(File file) throws IOException
-    {
+    public static Schematic loadSchematic(String fileName) throws IOException {
+    	File file = new File(savePath + File.separator + fileName);
         FileInputStream stream = new FileInputStream(file);
-        NBTInputStream nbtStream = new NBTInputStream(new GZIPInputStream(stream));
+        NBTInputStream nbtStream = new NBTInputStream(new BufferedInputStream(stream));
  
         CompoundTag schematicTag = (CompoundTag) nbtStream.readTag();
         if (!schematicTag.getName().equals("Schematic")) {
+            nbtStream.close();
             throw new IllegalArgumentException("Tag \"Schematic\" does not exist or is not first");
+
         }
  
         Map<String, Tag> schematic = schematicTag.getValue();
         if (!schematic.containsKey("Blocks")) {
+            nbtStream.close();
             throw new IllegalArgumentException("Schematic file is missing a \"Blocks\" tag");
+
         }
  
         short width = getChildTag(schematic, "Width", ShortTag.class).getValue();
         short length = getChildTag(schematic, "Length", ShortTag.class).getValue();
         short height = getChildTag(schematic, "Height", ShortTag.class).getValue();
  
-        String materials = getChildTag(schematic, "Materials", StringTag.class).getValue();
-        if (!materials.equals("Alpha")) {
-            throw new IllegalArgumentException("Schematic file is not an Alpha schematic");
+ 
+        // Get blocks
+        byte[] blockId = getChildTag(schematic, "Blocks", ByteArrayTag.class).getValue();
+        byte[] blockData = getChildTag(schematic, "Data", ByteArrayTag.class).getValue();
+        byte[] addId = new byte[0];
+        short[] blocks = new short[blockId.length]; // Have to later combine IDs
+ 
+        // We support 4096 block IDs using the same method as vanilla Minecraft, where
+        // the highest 4 bits are stored in a separate byte array.
+        if (schematic.containsKey("AddBlocks")) {
+            addId = getChildTag(schematic, "AddBlocks", ByteArrayTag.class).getValue();
         }
  
-        byte[] blocks = getChildTag(schematic, "Blocks", ByteArrayTag.class).getValue();
-        byte[] blockData = getChildTag(schematic, "Data", ByteArrayTag.class).getValue();
+        // Combine the AddBlocks data with the first 8-bit block ID
+        for (int index = 0; index < blockId.length; index++) {
+            if ((index >> 1) >= addId.length) { // No corresponding AddBlocks index
+                blocks[index] = (short) (blockId[index] & 0xFF);
+            } else {
+                if ((index & 1) == 0) {
+                    blocks[index] = (short) (((addId[index >> 1] & 0x0F) << 8) + (blockId[index] & 0xFF));
+                } else {
+                    blocks[index] = (short) (((addId[index >> 1] & 0xF0) << 4) + (blockId[index] & 0xFF));
+                }
+            }
+        }
+        nbtStream.close();
         return new Schematic(blocks, blockData, width, length, height);
     }
  
