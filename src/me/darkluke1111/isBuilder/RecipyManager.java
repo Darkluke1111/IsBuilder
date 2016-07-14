@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -38,33 +37,37 @@ public class RecipyManager implements Listener{
 	public void destroy() {
 		HandlerList.unregisterAll(this);
 	}
-	
+
 	@EventHandler
 	public void onCrafting(PrepareItemCraftEvent event) {
-		for(AdvancedRecipe recipe : recipies) {
-			if(recipiesAreEqual(recipe.getRecipe(),event.getRecipe())) {
-				if(event.getInventory().getHolder() instanceof Player) {
+		for (AdvancedRecipe recipe : recipies) {
+			if (recipiesAreEqual(recipe.getRecipe(), event.getRecipe())) {
+				if (event.getInventory().getHolder() instanceof Player) {
 					Player crafter = (Player) event.getInventory().getHolder();
-					Location pos = crafter.getLocation().add(0, -1, 0);
-					Block groundblock = pos.getBlock();
-					if(groundblock.getType().equals(Material.WORKBENCH)) {
-						if(recipe.getStruct().lookForStructure(pos)) {
-							//Alles ok, Item wird gecraftet
-						} else {
-							//Die nötige Crafting Struktur ist nicht vorhanden
-							event.getInventory().setResult(new ItemStack(Material.AIR));
-							crafter.sendMessage(ChatColor.RED + "Deine Werkbank besitzt nicht die nötige Ausstattung!");
-						}
+					Location pos = crafter.getLocation();
+
+					if (matchStructures(recipe, pos)) {
+						// Alles ok, Item wird gecraftet
 					} else {
-						//Der Spieler steht nicht auf der Werkbank
+						// Die nötige Crafting Struktur ist nicht vorhanden
 						event.getInventory().setResult(new ItemStack(Material.AIR));
-						crafter.sendMessage(ChatColor.RED + "Du musst auf einer Werkbank stehen!");
+						crafter.sendMessage(ChatColor.RED + "Deine Werkbank besitzt nicht die nötige Ausstattung!");
 					}
+
 				}
 			}
 		}
 	}
 	
+	public boolean matchStructures(AdvancedRecipe recipe, Location pos) {
+		for(String structName : recipe.getStructNames()) {
+			if(CraftingStructure.lookForStructure(pos, CraftingStructure.getStructureForName(structName))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Vergleicht 2 Rezepte aufgrund Name und 1. Lore-String der Ergebnisprodukte
 	 * @param r1

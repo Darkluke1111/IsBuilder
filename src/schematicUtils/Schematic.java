@@ -1,5 +1,7 @@
 package schematicUtils;
 
+import org.bukkit.util.Vector;
+
 /*
 *
 *    This class is free software: you can redistribute it and/or modify
@@ -29,14 +31,16 @@ public class Schematic
     private short width;
     private short lenght;
     private short height;
+    private Vector offset;
  
-    public Schematic(short[] blocks2, byte[] data, short width, short lenght, short height)
+    public Schematic(short[] blocks2, byte[] data, short width, short lenght, short height, Vector offset)
     {
         this.blocks = blocks2;
         this.data = data;
         this.width = width;
         this.lenght = lenght;
         this.height = height;
+        this.offset = offset;
     }
  
     /**
@@ -78,4 +82,8 @@ public class Schematic
     {
         return height;
     }
+    
+    public Vector getOffset() {
+		return offset;
+	}
 }

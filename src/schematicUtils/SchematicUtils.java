@@ -9,18 +9,17 @@ import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.util.Vector;
 import org.jnbt.ByteArrayTag;
 import org.jnbt.CompoundTag;
+import org.jnbt.IntTag;
 import org.jnbt.NBTInputStream;
 import org.jnbt.ShortTag;
 import org.jnbt.Tag;
 
-public class schematicUtils {
+
+public class SchematicUtils {
 	static File savePath;
-	
-	public static void setSaveDir(File file) {
-		savePath = file;
-	}
 	
 	public static void pasteSchematic(World world, Location loc, Schematic schematic)
     {
@@ -42,8 +41,7 @@ public class schematicUtils {
         }
     }
  
-    public static Schematic loadSchematic(String fileName) throws IOException {
-    	File file = new File(savePath + File.separator + fileName);
+    public static Schematic loadSchematic(File file) throws IOException {
         FileInputStream stream = new FileInputStream(file);
         NBTInputStream nbtStream = new NBTInputStream(new BufferedInputStream(stream));
  
@@ -60,13 +58,19 @@ public class schematicUtils {
             throw new IllegalArgumentException("Schematic file is missing a \"Blocks\" tag");
 
         }
- 
-        short width = getChildTag(schematic, "Width", ShortTag.class).getValue();
-        short length = getChildTag(schematic, "Length", ShortTag.class).getValue();
-        short height = getChildTag(schematic, "Height", ShortTag.class).getValue();
- 
- 
-        // Get blocks
+
+		short width = getChildTag(schematic, "Width", ShortTag.class).getValue();
+		short length = getChildTag(schematic, "Length", ShortTag.class).getValue();
+		short height = getChildTag(schematic, "Height", ShortTag.class).getValue();
+		Vector origin;
+
+		int offsetX = getChildTag(schematic, "WEOffsetX", IntTag.class).getValue();
+		int offsetY = getChildTag(schematic, "WEOffsetY", IntTag.class).getValue();
+		int offsetZ = getChildTag(schematic, "WEOffsetZ", IntTag.class).getValue();
+		System.out.println(offsetX + " " + offsetY + " " + offsetZ);
+		Vector offset = new Vector(offsetX, offsetY, offsetZ);
+
+		// Get blocks
         byte[] blockId = getChildTag(schematic, "Blocks", ByteArrayTag.class).getValue();
         byte[] blockData = getChildTag(schematic, "Data", ByteArrayTag.class).getValue();
         byte[] addId = new byte[0];
@@ -91,7 +95,7 @@ public class schematicUtils {
             }
         }
         nbtStream.close();
-        return new Schematic(blocks, blockData, width, length, height);
+        return new Schematic(blocks, blockData, width, length, height, offset);
     }
  
     /**

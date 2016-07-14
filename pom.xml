@@ -17,6 +17,7 @@
     			<include>Lvl1.schematic</include>
     			<include>Lvl2.schematic</include>
     			<include>Lvl3.schematic</include>
+    			<include>config.yml</include>
     		</includes>
     	</resource>
     </resources>
