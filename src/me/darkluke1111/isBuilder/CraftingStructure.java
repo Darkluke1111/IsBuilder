@@ -2,6 +2,7 @@ package me.darkluke1111.isBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Location;
@@ -12,7 +13,7 @@ import schematicUtils.SchematicUtils;
 
 public class CraftingStructure {
 	
-	private static Map<String,Schematic> structures;
+	private static Map<String,Schematic> structures = new HashMap<>();
 	
 	private CraftingStructure() {}
 	
@@ -46,7 +47,6 @@ public class CraftingStructure {
 	static public boolean lookForStructure(Location pos, Schematic struct) {
 		Location origin = new Location(pos.getWorld(), pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
 		origin = origin.add(struct.getOffset());
-		System.out.println("Pos: " + origin.toString());
 		Location temp;
 		int index;
 		for(short x = 0; x < struct.getLenght(); x++) {

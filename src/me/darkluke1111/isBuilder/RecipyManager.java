@@ -1,10 +1,12 @@
 package me.darkluke1111.isBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -18,20 +20,24 @@ import net.md_5.bungee.api.ChatColor;
 
 public class RecipyManager implements Listener{
 	
-	private List<AdvancedRecipe> recipies = new ArrayList<>();
-	private Plugin plugin;
+	public Map<String,AdvancedRecipe> recipes = new HashMap<>();
 	
 	
 	
 	public RecipyManager(Plugin plugin) {
-		this.plugin = plugin;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 	
-	
-	public void addRecipy(AdvancedRecipe recipe) {
-		recipies.add(recipe);
-		plugin.getServer().addRecipe(recipe.getRecipe());
+	public void initRecipes(Plugin plugin,RecipeLoader rl) {
+		Configuration config = plugin.getConfig();		
+		ConfigurationSection confSec = config.getConfigurationSection("recipes");
+		AdvancedRecipe recipe;
+				
+		for(String key : confSec.getKeys(false)) {
+			recipe = new AdvancedRecipe(key, rl.getResultMat(key), rl.getresultAmount(key), rl.getPattern(key), rl.getIngredients(key), rl.getCraftStructNames(key));
+			plugin.getServer().addRecipe(recipe.getRecipe());
+			recipes.put(key, recipe);
+		}
 	}
 	
 	public void destroy() {
@@ -40,7 +46,7 @@ public class RecipyManager implements Listener{
 
 	@EventHandler
 	public void onCrafting(PrepareItemCraftEvent event) {
-		for (AdvancedRecipe recipe : recipies) {
+		for (AdvancedRecipe recipe : recipes.values()) {
 			if (recipiesAreEqual(recipe.getRecipe(), event.getRecipe())) {
 				if (event.getInventory().getHolder() instanceof Player) {
 					Player crafter = (Player) event.getInventory().getHolder();

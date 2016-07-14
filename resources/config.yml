@@ -5,5 +5,5 @@ recipes:
     craftPattern: "XXX-XXX-XXX"
     ingredients:
       X: COBBLESTONE
-    craftStructName:
-      -Lvl1
+    craftStructNames:
+      - Lvl1

@@ -19,16 +19,19 @@ public class RecipeLoader {
 	public Material getResultMat(String name) {
 		String materialName = plugin.getConfig().getString("recipes."+ name + ".resultMat");
 		Material mat = Material.getMaterial(materialName);
+//		System.out.println(mat.toString());
 		return mat;
 	}
 	
 	public int getresultAmount(String name) {
 		int amount = plugin.getConfig().getInt("recipes."+ name + ".resultAmount");
+//		System.out.println(amount);
 		return amount;
 	}
 	
 	public String[] getPattern(String name) {
 		String[] craftPattern = plugin.getConfig().getString("recipes."+ name + ".craftPattern").split("-");
+//		System.out.println(craftPattern.toString());
 		return craftPattern;
 	}
 	
@@ -39,6 +42,7 @@ public class RecipeLoader {
 			String matName = plugin.getConfig().getString("recipes."+ name + ".ingredients." + letter);
 			ingredients.put(letter.charAt(0), Material.getMaterial(matName));
 		}
+//		System.out.println(ingredients.toString());
 		return ingredients;
 	}
 	
