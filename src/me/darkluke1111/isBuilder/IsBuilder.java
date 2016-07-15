@@ -1,5 +1,9 @@
 package me.darkluke1111.isBuilder;
 
+import java.io.File;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -18,10 +22,12 @@ public class IsBuilder extends JavaPlugin {
 	public void onEnable() {
 		getConfig().options().copyDefaults(true);
 		this.saveConfig();
+		getResource("recipes.yml");
+		FileConfiguration recipeConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "recipes.yml"));
+		
 		IsBuilderUtils.unpackSchematics(this);
 		
-
-		rl = new RecipeLoader(getConfig());
+		rl = new RecipeLoader(recipeConfig);
 		sl = new CraftingStructureLoader(this);
 		rm = new RecipeManager(this);
 		

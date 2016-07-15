@@ -1,5 +1,5 @@
 Adding advanced recipes:
-You can only make shaped recipes which need a 3x3 crafting grid (yet). There is already one recipe example in the config file to give you an idea how it works.
+You can only make shaped recipes which need a 3x3 crafting grid (yet). There is already one recipe example in the recipes.yml file to give you an idea how it works.
 
 #################################################
 
@@ -22,5 +22,5 @@ recipes: 							#here begins the section in which you can add your recipes
 ##################################################
 
 Adding structures:
-Structures can be added by placing schematic files into the plugin's datafolder. The file needs to have the extension ".schematic". The filename without the extension will be the structure name, which you need to use in the config.yml file to add the structure to a recipe.
+Structures can be added by placing schematic files into the plugin's datafolder. The file needs to have the extension ".schematic". The filename without the extension will be the structure name, which you need to use in the recipes.yml file to add the structure to a recipe.
 IMPORTANT: Using an GZIPInputStream to load the schematics from the gzipped schematicfiles, which are provided by WorldEdit, did not work for me. This means the plugin only accepts unzipped schematic files! If you got zipped ones, unzip them before you add them into the datafolder!
