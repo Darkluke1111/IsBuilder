@@ -1,11 +1,12 @@
 package me.darkluke1111.isBuilder;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -23,7 +24,7 @@ import me.darkluke1111.isBuilder.RecipeLoader.MaterialCompound;
 public class AdvancedRecipe {
 
 	private ShapedRecipe recipe;
-	private List<String> structNames;
+	private Set<String> structNames;
 
 	/**
 	 * Constructor builds Shapedrecipe and wraps it together with a list of
@@ -49,7 +50,7 @@ public class AdvancedRecipe {
 		for (Entry<Character, MaterialCompound> entry : ingredients.entrySet()) {
 			recipe.setIngredient(entry.getKey(),new MaterialData(entry.getValue().mat,entry.getValue().data));
 		}
-		structNames = list;
+		structNames = new HashSet<>(list);
 
 	}
 
@@ -67,7 +68,7 @@ public class AdvancedRecipe {
 	 * 
 	 * @return
 	 */
-	public List<String> getStructNames() {
+	public Set<String> getStructNames() {
 		return structNames;
 	}
 
@@ -83,5 +84,17 @@ public class AdvancedRecipe {
 		meta.setLore(Arrays.asList("Advanced"));
 		item.setItemMeta(meta);
 		return item;
+	}
+	
+	@Override
+	public boolean equals(Object rSide) {
+	    if(!(rSide instanceof AdvancedRecipe)) return false;
+	    
+	    AdvancedRecipe rRecipe = (AdvancedRecipe) rSide;
+	    if(!IsBuilderUtils.recipiesAreEqual(this.getRecipe(), rRecipe.getRecipe())) return false;
+	    
+	    if(!getStructNames().equals(rRecipe.getStructNames())) return false;
+	    
+        return true;    
 	}
 }
