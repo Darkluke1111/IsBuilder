@@ -12,6 +12,7 @@ public class IsBuilder extends JavaPlugin {
 
 	RecipyManager rm;
 	RecipeLoader rl;
+	StructureLoader sl;
 
 	@Override
 	public void onEnable() {
@@ -21,8 +22,10 @@ public class IsBuilder extends JavaPlugin {
 		
 
 		rl = new RecipeLoader(getConfig());
+		sl = new StructureLoader(this);
 		rm = new RecipyManager(this);
-		rm.loadStructures();
+		
+		rm.addStructures(sl.loadStructures());
 		rm.addRecipes(rl.loadRecipes());
 
 	}

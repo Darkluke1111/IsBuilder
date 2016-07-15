@@ -1,4 +1,4 @@
-package schematicUtils;
+package me.darkluke1111.isBuilder;
 
 import org.bukkit.util.Vector;
 

@@ -1,6 +1,5 @@
 package me.darkluke1111.isBuilder;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -17,7 +16,6 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import me.darkluke1111.isBuilder.CraftingStructure.RecipeLoadException;
 import net.md_5.bungee.api.ChatColor;
 
 /**
@@ -37,8 +35,6 @@ public class RecipyManager implements Listener {
 
 	private Map<String, CraftingStructure> structures = new HashMap<>();
 
-	private Plugin plugin;
-
 	/**
 	 * Constructor
 	 * 
@@ -46,7 +42,6 @@ public class RecipyManager implements Listener {
 	 */
 	public RecipyManager(Plugin plugin) {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
-		this.plugin = plugin;
 	}
 
 	/**
@@ -69,6 +64,15 @@ public class RecipyManager implements Listener {
 			Bukkit.getServer().addRecipe(aRecipe.getRecipe());
 		}
 		recipes.addAll(set);
+	}
+
+	/**
+	 * Adds a map for crafting structures to the manager
+	 * 
+	 * @param map
+	 */
+	public void addStructures(Map<String, CraftingStructure> map) {
+		structures.putAll(map);
 	}
 
 	/**
@@ -132,24 +136,4 @@ public class RecipyManager implements Listener {
 		return structures.get(name);
 	}
 
-	/**
-	 * Adds the crafting structures to the manager
-	 * 
-	 */
-	public void loadStructures() {
-		File folder = plugin.getDataFolder();
-		String[] filenames = folder.list();
-		CraftingStructure struct;
-		for (String name : filenames) {
-			if (name.endsWith(".schematic")) {
-				try {
-					struct = new CraftingStructure(name, plugin);
-					structures.put(name.substring(0, name.lastIndexOf('.')), struct);
-				} catch (RecipeLoadException e) {
-					plugin.getLogger().warning(e.getMessage());
-				}
-
-			}
-		}
-	}
 }
