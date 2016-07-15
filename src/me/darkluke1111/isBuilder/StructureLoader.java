@@ -39,13 +39,10 @@ public class StructureLoader {
 		File folder = plugin.getDataFolder();
 		String[] filenames = folder.list();
 		CraftingStructure struct;
-		Schematic schematic;
 		for (String name : filenames) {
 			if (name.endsWith(".schematic")) {
-				File schematicFile = new File(plugin.getDataFolder() + File.separator + name);
 				try {
-					schematic = loadSchematic(schematicFile);
-					struct = new CraftingStructure(name, schematic);
+					struct = loadCraftingStructure(name);
 					structures.put(name.substring(0, name.lastIndexOf('.')), struct);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -54,15 +51,9 @@ public class StructureLoader {
 		}
 		return structures;
 	}
-
-	/**
-	 * Loads a schematic file from plugin data folder
-	 * 
-	 * @param file
-	 * @return
-	 * @throws IOException
-	 */
-	public static Schematic loadSchematic(File file) throws IOException {
+	
+	public CraftingStructure loadCraftingStructure(String name) throws IOException {
+		File file = new File(plugin.getDataFolder() + File.separator + name);
 		FileInputStream stream = new FileInputStream(file);
 		NBTInputStream nbtStream = new NBTInputStream(new BufferedInputStream(stream));
 
@@ -116,7 +107,7 @@ public class StructureLoader {
 			}
 		}
 		nbtStream.close();
-		return new Schematic(blocks, blockData, width, length, height, offset);
+		return new CraftingStructure(name, blocks, blockData, width, length, height, offset);
 	}
 
 	/**
@@ -144,4 +135,5 @@ public class StructureLoader {
 		}
 		return expected.cast(tag);
 	}
+
 }

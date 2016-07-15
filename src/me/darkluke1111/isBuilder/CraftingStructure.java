@@ -1,6 +1,7 @@
 package me.darkluke1111.isBuilder;
 
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 /**
  * Instances represent a blockstructure which needs to be placed around a
@@ -11,20 +12,25 @@ import org.bukkit.Location;
  */
 public class CraftingStructure {
 
-	private Schematic schematic;
+	String name;
+    private short[] blocks;
+    private byte[] data;
+    private short width;
+    private short lenght;
+    private short height;
+    private Vector offset;
+ 
+    public CraftingStructure(String name, short[] blocks2, byte[] data, short width, short lenght, short height, Vector offset)
+    {
 
-	public CraftingStructure(String name, Schematic schematic) {
-		this.schematic = schematic;
-	}
-
-	/**
-	 * Returns the blockstructure as Schematic
-	 * 
-	 * @return
-	 */
-	public Schematic getSchematic() {
-		return schematic;
-	}
+        this.blocks = blocks2;
+        this.data = data;
+        this.width = width;
+        this.lenght = lenght;
+        this.height = height;
+        this.offset = offset;
+    }
+	
 
 	/**
 	 * Looks for the structure at the given Location (The structure will be
@@ -36,29 +42,72 @@ public class CraftingStructure {
 	@SuppressWarnings("deprecation")
 	public boolean lookForStructure(Location pos) {
 		Location origin = new Location(pos.getWorld(), pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
-		Schematic struct = this.getSchematic();
-		origin = origin.add(struct.getOffset());
+		origin = origin.add(getOffset());
 		Location temp;
 		int index;
-		for (short x = 0; x < struct.getLenght(); x++) {
-			for (short y = 0; y < struct.getHeight(); y++) {
-				for (short z = 0; z < struct.getWidth(); z++) {
+		for (short x = 0; x < getLenght(); x++) {
+			for (short y = 0; y < getHeight(); y++) {
+				for (short z = 0; z < getWidth(); z++) {
 					temp = origin.clone();
 					temp.add(x, y, z);
-					index = y * struct.getWidth() * struct.getLenght() + z * struct.getWidth() + x;
+					index = y * getWidth() * getLenght() + z * getWidth() + x;
 					// System.out.println(x + " " + y + " " + z + " - Is: " +
 					// temp.getBlock().getTypeId() + " should be: " +
 					// struct.getBlocks()[index]);
-					if (struct.getData()[index] == 0)
+					if (getData()[index] == 0)
 						continue;
-					if (!(temp.getBlock().getTypeId() == (int) struct.getBlocks()[index])
-							|| !(temp.getBlock().getData() == (int) struct.getData()[index])) {
+					if (!(temp.getBlock().getTypeId() == (int) getBlocks()[index])
+							|| !(temp.getBlock().getData() == (int) getData()[index])) {
 						return false;
 					}
 				}
 			}
 		}
 		return true;
+	}
+	
+    /**
+    * @return the blocks
+    */
+    public short[] getBlocks()
+    {
+        return blocks;
+    }
+ 
+    /**
+    * @return the data
+    */
+    public byte[] getData()
+    {
+        return data;
+    }
+ 
+    /**
+    * @return the width
+    */
+    public short getWidth()
+    {
+        return width;
+    }
+ 
+    /**
+    * @return the lenght
+    */
+    public short getLenght()
+    {
+        return lenght;
+    }
+ 
+    /**
+    * @return the height
+    */
+    public short getHeight()
+    {
+        return height;
+    }
+    
+    public Vector getOffset() {
+		return offset;
 	}
 
 }
