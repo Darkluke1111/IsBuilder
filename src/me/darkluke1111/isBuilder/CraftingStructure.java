@@ -11,9 +11,13 @@ import org.bukkit.plugin.Plugin;
 import schematicUtils.Schematic;
 import schematicUtils.SchematicUtils;
 
+/**Instances represent a blockstructure which needs to be placed around a workbench in order to use advanced recipes
+ * @author Lukas
+ *
+ */
 public class CraftingStructure {
 
-	private static Map<String, CraftingStructure> structures = new HashMap<>();
+
 	
 	private Schematic schematic;
 
@@ -66,29 +70,8 @@ public class CraftingStructure {
 	}
 
 
-	
-	
 
-	public static void loadStructures(Plugin plugin) {
-		File folder = plugin.getDataFolder();
-		String[] filenames = folder.list();
-		CraftingStructure struct;
-		for(String name : filenames) {
-			if(name.endsWith(".schematic")) {
-				try {
-					struct = new CraftingStructure(name, plugin);
-					structures.put(name.substring(0, name.lastIndexOf('.')), struct);
-				} catch (RecipeLoadException e) {
-					plugin.getLogger().warning(e.getMessage());
-				}
-				
-			}
-		}
-	}
 	
-	public static CraftingStructure getStructureForName(String name) {
-		return structures.get(name);
-	}
 	
 	
 }

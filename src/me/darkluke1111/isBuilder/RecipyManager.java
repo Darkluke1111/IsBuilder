@@ -1,6 +1,9 @@
 package me.darkluke1111.isBuilder;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -12,46 +15,86 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
 
+import me.darkluke1111.isBuilder.CraftingStructure.RecipeLoadException;
 import net.md_5.bungee.api.ChatColor;
 
-public class RecipyManager implements Listener{
-	
-	public Set<AdvancedRecipe> recipes = new HashSet<>();
-		
+/**
+ * Handles Crafting with advanced recipes AdvancedRecipe Instances must be added
+ * to be managed.
+ * 
+ * @author Lukas
+ *
+ */
+public class RecipyManager implements Listener {
+
+	/**
+	 * Stores all added advanced recipes
+	 * 
+	 */
+	private Set<AdvancedRecipe> recipes = new HashSet<>();
+
+	private Map<String, CraftingStructure> structures = new HashMap<>();
+
+	private Plugin plugin;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param plugin
+	 */
 	public RecipyManager(Plugin plugin) {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+		this.plugin = plugin;
 	}
-	
 
-	
+	/**
+	 * Unregisters all EventHandlers in the instance. Should be called when the
+	 * RecipeManager Instance is not used anymore. (e.g. in onDisable() of main
+	 * plugin class)
+	 * 
+	 */
 	public void destroy() {
 		HandlerList.unregisterAll(this);
 	}
-	
+
+	/**
+	 * Adds a set of advanced recipes to the manager
+	 * 
+	 * @param set
+	 */
 	public void addRecipes(Set<AdvancedRecipe> set) {
-		for( AdvancedRecipe aRecipe : set) {
+		for (AdvancedRecipe aRecipe : set) {
 			Bukkit.getServer().addRecipe(aRecipe.getRecipe());
-		}		
+		}
 		recipes.addAll(set);
 	}
-	
-	public void AdvancedRecipe(AdvancedRecipe recipe) {
+
+	/**
+	 * Adds one advanced recipe to the manager
+	 * 
+	 * @param recipe
+	 */
+	public void addRecipe(AdvancedRecipe recipe) {
 		Bukkit.getServer().addRecipe(recipe.getRecipe());
 		recipes.add(recipe);
 	}
 
+	/**
+	 * Is called from the PrepareItemCraftEvent to handle advanced crafting
+	 * 
+	 * @param event
+	 */
 	@EventHandler
 	public void onCrafting(PrepareItemCraftEvent event) {
 		for (AdvancedRecipe recipe : recipes) {
-			if (recipiesAreEqual(recipe.getRecipe(), event.getRecipe())) {
+			if (IsBuilderUtils.recipiesAreEqual(recipe.getRecipe(), event.getRecipe())) {
 				if (event.getInventory().getHolder() instanceof Player) {
 					Player crafter = (Player) event.getInventory().getHolder();
 					Location pos = crafter.getLocation();
 
-					if (matchStructures(recipe, pos)) {
+					if (matchCraftingStructures(recipe, pos)) {
 						// Alles ok, Item wird gecraftet
 					} else {
 						// Die nötige Crafting Struktur ist nicht vorhanden
@@ -63,10 +106,16 @@ public class RecipyManager implements Listener{
 			}
 		}
 	}
-	
-	public boolean matchStructures(AdvancedRecipe recipe, Location pos) {
-		for(String structName : recipe.getStructNames()) {
-			if(CraftingStructure.getStructureForName(structName).lookForStructure(pos)) {
+
+	/**
+	 * Returns true if a required crafting structure is present at the Location
+	 * 
+	 * @param pos
+	 * @return
+	 */
+	public boolean matchCraftingStructures(AdvancedRecipe aRecipe, Location pos) {
+		for (String structName : aRecipe.getStructNames()) {
+			if (getStructureForName(structName).lookForStructure(pos)) {
 				return true;
 			}
 		}
@@ -74,22 +123,33 @@ public class RecipyManager implements Listener{
 	}
 
 	/**
-	 * Vergleicht 2 Rezepte aufgrund Name und 1. Lore-String der Ergebnisprodukte
-	 * @param r1
-	 * @param r2
+	 * Returns the Crafting Structure for its name
+	 * 
+	 * @param name
 	 * @return
 	 */
-	public boolean recipiesAreEqual(Recipe r1, Recipe r2) {
-		ItemStack is1 = r1.getResult();
-		ItemStack is2 = r2.getResult();
-		if(is1.getType() == is2.getType()) {
-			String lore1 = is1.getItemMeta().getLore().get(0);
-			String lore2 = is2.getItemMeta().getLore().get(0);
-			if(lore1.equals(lore2)) {
-				return true;
+	public CraftingStructure getStructureForName(String name) {
+		return structures.get(name);
+	}
+
+	/**
+	 * Adds the crafting structures to the manager
+	 * 
+	 */
+	public void loadStructures() {
+		File folder = plugin.getDataFolder();
+		String[] filenames = folder.list();
+		CraftingStructure struct;
+		for (String name : filenames) {
+			if (name.endsWith(".schematic")) {
+				try {
+					struct = new CraftingStructure(name, plugin);
+					structures.put(name.substring(0, name.lastIndexOf('.')), struct);
+				} catch (RecipeLoadException e) {
+					plugin.getLogger().warning(e.getMessage());
+				}
+
 			}
 		}
-		return false;
 	}
-	
 }
