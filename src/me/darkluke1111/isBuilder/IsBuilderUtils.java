@@ -24,6 +24,7 @@ public class IsBuilderUtils {
 	 * Unpacks schematic files from the plugin jar into the data-folder
 	 * 
 	 * @param plugin
+	 *            The owning plugin
 	 */
 	public static void unpackSchematics(Plugin plugin) {
 		try {
@@ -64,8 +65,10 @@ public class IsBuilderUtils {
 	 * advanced recipe results from normal ones
 	 * 
 	 * @param r1
+	 *            The first recipe
 	 * @param r2
-	 * @return
+	 *            The second recipe
+	 * @return True if the recipes are "equal"
 	 */
 	public static boolean recipiesAreEqual(Recipe r1, Recipe r2) {
 		ItemStack is1 = r1.getResult();

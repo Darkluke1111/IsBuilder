@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class IsBuilder extends JavaPlugin {
 
-	RecipyManager rm;
+	RecipeManager rm;
 	RecipeLoader rl;
 	StructureLoader sl;
 
@@ -23,7 +23,7 @@ public class IsBuilder extends JavaPlugin {
 
 		rl = new RecipeLoader(getConfig());
 		sl = new StructureLoader(this);
-		rm = new RecipyManager(this);
+		rm = new RecipeManager(this);
 		
 		rm.addStructures(sl.loadStructures());
 		rm.addRecipes(rl.loadRecipes());

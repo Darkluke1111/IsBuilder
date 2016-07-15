@@ -32,7 +32,7 @@ public class StructureLoader {
 	/**
 	 * Loads all structures from the schematic files in the plugin data folder
 	 * 
-	 * @return
+	 * @return Map of loaded structures
 	 */
 	public Map<String, CraftingStructure> loadStructures() {
 		Map<String, CraftingStructure> structures = new HashMap<>();
@@ -51,7 +51,15 @@ public class StructureLoader {
 		}
 		return structures;
 	}
-	
+
+	/**
+	 * Loads a Structure with the given name from dataFolder/name
+	 * 
+	 * @param name
+	 *            Name of the structure
+	 * @return the loaded CraftingStructure
+	 * @throws IOException
+	 */
 	public CraftingStructure loadCraftingStructure(String name) throws IOException {
 		File file = new File(plugin.getDataFolder() + File.separator + name);
 		FileInputStream stream = new FileInputStream(file);

@@ -25,7 +25,7 @@ import net.md_5.bungee.api.ChatColor;
  * @author Lukas
  *
  */
-public class RecipyManager implements Listener {
+public class RecipeManager implements Listener {
 
 	/**
 	 * Stores all added advanced recipes
@@ -40,7 +40,7 @@ public class RecipyManager implements Listener {
 	 * 
 	 * @param plugin
 	 */
-	public RecipyManager(Plugin plugin) {
+	public RecipeManager(Plugin plugin) {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 

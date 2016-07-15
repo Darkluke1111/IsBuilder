@@ -13,31 +13,50 @@ import org.bukkit.util.Vector;
 public class CraftingStructure {
 
 	String name;
-    private short[] blocks;
-    private byte[] data;
-    private short width;
-    private short lenght;
-    private short height;
-    private Vector offset;
- 
-    public CraftingStructure(String name, short[] blocks2, byte[] data, short width, short lenght, short height, Vector offset)
-    {
+	private short[] blocks;
+	private byte[] data;
+	private short width;
+	private short lenght;
+	private short height;
+	private Vector offset;
 
-        this.blocks = blocks2;
-        this.data = data;
-        this.width = width;
-        this.lenght = lenght;
-        this.height = height;
-        this.offset = offset;
-    }
-	
+	/**
+	 * Constructor
+	 * 
+	 * @param name
+	 *            Name of the CraftingStructure
+	 * @param blocks2
+	 *            The Array which represents the structure blocks
+	 * @param data
+	 *            The Array which represents the structures blockdata
+	 * @param width
+	 *            The width of the structure
+	 * @param lenght
+	 *            The length of the structure
+	 * @param height
+	 *            The height of the structure
+	 * @param offset
+	 *            Vector from The Structures corner to the block above the
+	 *            workbench
+	 */
+	public CraftingStructure(String name, short[] blocks2, byte[] data, short width, short lenght, short height,
+			Vector offset) {
+
+		this.blocks = blocks2;
+		this.data = data;
+		this.width = width;
+		this.lenght = lenght;
+		this.height = height;
+		this.offset = offset;
+	}
 
 	/**
 	 * Looks for the structure at the given Location (The structure will be
 	 * recognized if the structures crafting table is one block below pos)
 	 * 
 	 * @param pos
-	 * @return
+	 *            The Location which should be above the workbench
+	 * @return True if the structure was found
 	 */
 	@SuppressWarnings("deprecation")
 	public boolean lookForStructure(Location pos) {
@@ -65,48 +84,43 @@ public class CraftingStructure {
 		}
 		return true;
 	}
-	
-    /**
-    * @return the blocks
-    */
-    public short[] getBlocks()
-    {
-        return blocks;
-    }
- 
-    /**
-    * @return the data
-    */
-    public byte[] getData()
-    {
-        return data;
-    }
- 
-    /**
-    * @return the width
-    */
-    public short getWidth()
-    {
-        return width;
-    }
- 
-    /**
-    * @return the lenght
-    */
-    public short getLenght()
-    {
-        return lenght;
-    }
- 
-    /**
-    * @return the height
-    */
-    public short getHeight()
-    {
-        return height;
-    }
-    
-    public Vector getOffset() {
+
+	/**
+	 * @return the blocks
+	 */
+	public short[] getBlocks() {
+		return blocks;
+	}
+
+	/**
+	 * @return the data
+	 */
+	public byte[] getData() {
+		return data;
+	}
+
+	/**
+	 * @return the width
+	 */
+	public short getWidth() {
+		return width;
+	}
+
+	/**
+	 * @return the lenght
+	 */
+	public short getLenght() {
+		return lenght;
+	}
+
+	/**
+	 * @return the height
+	 */
+	public short getHeight() {
+		return height;
+	}
+
+	public Vector getOffset() {
 		return offset;
 	}
 
