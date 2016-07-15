@@ -1,9 +1,75 @@
 recipes:
-  GoldBlock1:
-    resultMat: GOLD_BLOCK
+  Diorite:
+    resultMat: STONE:5
     resultAmount: 1
     craftPattern: "XXX-XXX-XXX"
     ingredients:
-      X: COBBLESTONE
+      X: STONE:0
+    craftStructNames:
+      - Lvl0
+      - Lvl1
+      - Lvl2
+
+  Granite:
+    resultMat: STONE:1
+    resultAmount: 1
+    craftPattern: "XXX-XXX-XXX"
+    ingredients:
+      X: STONE:5
     craftStructNames:
       - Lvl1
+      - Lvl2
+
+  DarkOak:
+    resultMat: SAPLING:5
+    resultAmount: 1
+    craftPattern: "AXA-XAX-AXA"
+    ingredients:
+      X: SAPLING:0
+      A: AIR:0
+    craftStructNames:
+      - Lvl1
+      - Lvl2
+
+  MelonSeeds:
+    resultMat: MELON_SEEDS:0
+    resultAmount: 1
+    craftPattern: "AXA-XAX-AXA"
+    ingredients:
+      X: APPLE:0
+      A: AIR:0
+    craftStructNames:
+      - Lvl1
+      - Lvl2
+
+  Sand:
+    resultMat: SAND:0
+    resultAmount: 1
+    craftPattern: "XAX-AXA-XAX"
+    ingredients:
+      X: STONE:0
+      A: AIR:0
+    craftStructNames:
+      - Lvl1
+      - Lvl2
+
+  Andesite:
+    resultMat: STONE:3
+    resultAmount: 1
+    craftPattern: "XXX-XXX-XXX"
+    ingredients:
+      X: STONE:1
+    craftStructNames:
+      - Lvl2
+
+  ClayBall:
+    resultMat: CLAY_BALL:0
+    resultAmount: 1
+    craftPattern: "AAA-AAA-XXX"
+    ingredients:
+      X: SAND:0
+      A: AIR:0
+    craftStructNames:
+      - Lvl2
+
+    

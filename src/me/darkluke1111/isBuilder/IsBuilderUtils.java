@@ -73,7 +73,7 @@ public class IsBuilderUtils {
 	public static boolean recipiesAreEqual(Recipe r1, Recipe r2) {
 		ItemStack is1 = r1.getResult();
 		ItemStack is2 = r2.getResult();
-		if (is1.getType() == is2.getType()) {
+		if (is1.getType() == is2.getType() && is1.getData().getData()==is2.getData().getData()) {
 			String lore1 = is1.getItemMeta().getLore().get(0);
 			String lore2 = is2.getItemMeta().getLore().get(0);
 			if (lore1.equals(lore2)) {

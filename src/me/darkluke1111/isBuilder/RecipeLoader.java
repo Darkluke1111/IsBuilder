@@ -41,13 +41,25 @@ public class RecipeLoader {
 		Set<AdvancedRecipe> recipes = new HashSet<>();
 		ConfigurationSection confSec = config.getConfigurationSection("recipes");
 		AdvancedRecipe recipe;
-
+		if(confSec == null) {
+			//TODO Errorhandling
+			return recipes;
+		}
 		for (String key : confSec.getKeys(false)) {
 			recipe = new AdvancedRecipe(key, getResultMat(key), getresultAmount(key), getPattern(key),
 					getIngredients(key), getCraftStructNames(key));
 			recipes.add(recipe);
 		}
 		return recipes;
+	}
+	
+	class MaterialCompound {
+		Material mat;
+		byte data;
+		public MaterialCompound(Material mat,byte data) {
+			this.mat = mat;
+			this.data = data;
+		}
 	}
 
 	/**
@@ -56,9 +68,12 @@ public class RecipeLoader {
 	 * @param name
 	 * @return
 	 */
-	public Material getResultMat(String name) {
-		String materialName = config.getString("recipes." + name + ".resultMat");
-		Material mat = Material.getMaterial(materialName);
+	public MaterialCompound getResultMat(String name) {
+		String entry = config.getString("recipes." + name + ".resultMat");
+		String[] devided = entry.split(":");
+		
+		MaterialCompound mat = new MaterialCompound(Material.getMaterial(devided[0]), Byte.parseByte(devided[1]));
+		
 		// System.out.println(mat.toString());
 		return mat;
 	}
@@ -97,12 +112,15 @@ public class RecipeLoader {
 	 * @param name
 	 * @return
 	 */
-	public Map<Character, Material> getIngredients(String name) {
-		Map<Character, Material> ingredients = new HashMap<>();
+	public Map<Character, MaterialCompound> getIngredients(String name) {
+		Map<Character, MaterialCompound> ingredients = new HashMap<>();
 		Set<String> set = config.getConfigurationSection("recipes." + name + ".ingredients").getKeys(false);
 		for (String letter : set) {
-			String matName = config.getString("recipes." + name + ".ingredients." + letter);
-			ingredients.put(letter.charAt(0), Material.getMaterial(matName));
+			String entry = config.getString("recipes." + name + ".ingredients." + letter);
+			
+			String[] devided = entry.split(":");			
+			MaterialCompound mat = new MaterialCompound(Material.getMaterial(devided[0]), Byte.parseByte(devided[1]));
+			ingredients.put(letter.charAt(0), mat);
 		}
 		// System.out.println(ingredients.toString());
 		return ingredients;
@@ -117,8 +135,12 @@ public class RecipeLoader {
 	 */
 	public List<String> getCraftStructNames(String name) {
 		List<?> list = config.getList("recipes." + name + ".craftStructNames");
+		//TODO syso
+		System.out.println(list);
 		List<String> structs = new ArrayList<>();
 		for (Object obj : list) {
+		    //TODO syso
+		    System.out.println((String)obj);
 			structs.add((String) obj);
 		}
 		return structs;

@@ -9,6 +9,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
+
+import me.darkluke1111.isBuilder.RecipeLoader.MaterialCompound;
 
 /**
  * Instances represent advanced recipes, while wrapping a Bukkit ShapedRecipe
@@ -33,17 +36,18 @@ public class AdvancedRecipe {
 	 * @param ingredients
 	 * @param list
 	 */
-	AdvancedRecipe(String name, Material resultMat, int amount, String[] pattern, Map<Character, Material> ingredients,
+	AdvancedRecipe(String name, MaterialCompound resultMat, int amount, String[] pattern, Map<Character, MaterialCompound> ingredients,
 			List<String> list) {
 
-		ItemStack result = new ItemStack(resultMat);
+		ItemStack result = new ItemStack(resultMat.mat,1,resultMat.data);
 		result = addLoreMarker(result);
 		recipe = new ShapedRecipe(result);
+		System.out.println(result.toString());
 
 		recipe.shape(pattern[0], pattern[1], pattern[2]);
 
-		for (Entry<Character, Material> entry : ingredients.entrySet()) {
-			recipe.setIngredient(entry.getKey(), entry.getValue());
+		for (Entry<Character, MaterialCompound> entry : ingredients.entrySet()) {
+			recipe.setIngredient(entry.getKey(),new MaterialData(entry.getValue().mat,entry.getValue().data));
 		}
 		structNames = list;
 

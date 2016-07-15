@@ -1,9 +1,0 @@
-recipes:
-  GoldBlock1:
-    resultMat: GOLD_BLOCK
-    resultAmount: 1
-    craftPattern: "XXX-XXX-XXX"
-    ingredients:
-      X: COBBLESTONE
-    craftStructNames:
-      - Lvl1

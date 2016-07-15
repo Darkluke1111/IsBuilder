@@ -22,7 +22,8 @@ public class IsBuilder extends JavaPlugin {
 	public void onEnable() {
 		getConfig().options().copyDefaults(true);
 		this.saveConfig();
-		getResource("recipes.yml");
+		
+		saveResource("recipes.yml",false);
 		FileConfiguration recipeConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "recipes.yml"));
 		
 		IsBuilderUtils.unpackSchematics(this);
@@ -40,7 +41,5 @@ public class IsBuilder extends JavaPlugin {
 	public void onDisable() {
 		rm.destroy();
 	}
-	
-	
 
 }

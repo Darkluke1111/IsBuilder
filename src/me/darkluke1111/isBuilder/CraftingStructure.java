@@ -42,12 +42,14 @@ public class CraftingStructure {
 	public CraftingStructure(String name, short[] blocks2, byte[] data, short width, short lenght, short height,
 			Vector offset) {
 
+	    this.name = name;
 		this.blocks = blocks2;
 		this.data = data;
 		this.width = width;
 		this.lenght = lenght;
 		this.height = height;
 		this.offset = offset;
+		
 	}
 
 	/**

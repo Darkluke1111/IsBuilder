@@ -119,6 +119,7 @@ public class RecipeManager implements Listener {
 	 */
 	public boolean matchCraftingStructures(AdvancedRecipe aRecipe, Location pos) {
 		for (String structName : aRecipe.getStructNames()) {
+		    System.out.println(getStructureForName(structName));
 			if (getStructureForName(structName).lookForStructure(pos)) {
 				return true;
 			}
