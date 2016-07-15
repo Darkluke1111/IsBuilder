@@ -11,10 +11,13 @@ public class IsBuilder extends JavaPlugin{
 	public void onEnable() {
 		getConfig().options().copyDefaults(true);
 		this.saveConfig();
+		IsBuilderUtils.unpackSchematics(this);
 		CraftingStructure.loadStructures(this);
+		
+		rl = new RecipeLoader(getConfig());
 		rm = new RecipyManager(this);
-		rl = new RecipeLoader(this);
-		rm.initRecipes(this, rl);
+		
+		rm.addRecipes(rl.loadRecipes());
 
 	}
 	

@@ -1,14 +1,9 @@
 package me.darkluke1111.isBuilder;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
@@ -18,74 +13,37 @@ import schematicUtils.SchematicUtils;
 
 public class CraftingStructure {
 
-	private static Map<String, Schematic> structures = new HashMap<>();
+	private static Map<String, CraftingStructure> structures = new HashMap<>();
+	
+	private Schematic schematic;
 
-	private CraftingStructure() {
-	}
-
-	public static void unpackSchematics(Plugin plugin) {
+	public CraftingStructure(String name, Plugin plugin) throws RecipeLoadException {
+		File schematicFile = new File(plugin.getDataFolder() + File.separator + name);
 		try {
-			JarFile jar = new JarFile(
-					plugin.getDataFolder().getParentFile() + File.separator + plugin.getName() + ".jar");
+			schematic = SchematicUtils.loadSchematic(schematicFile);
 
-			Enumeration<JarEntry> enumEntries = jar.entries();
-			while (enumEntries.hasMoreElements()) {
-				JarEntry file = enumEntries.nextElement();
-				File f = new File(plugin.getDataFolder() + java.io.File.separator + file.getName());
-				if (!file.getName().endsWith(".schematic"))
-					continue;
-				// if (file.isDirectory()) { // if its a directory, create it
-				// f.mkdir();
-				// continue;
-				// }
-
-				InputStream is = jar.getInputStream(file); // get the input
-															// stream
-				FileOutputStream fos = new FileOutputStream(f);
-
-				while (is.available() > 0) { // write contents of 'is' to 'fos'
-					fos.write(is.read());
-				}
-
-				fos.close();
-				is.close();
-			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static void loadStructures(Plugin plugin) {
-		unpackSchematics(plugin);
-		File folder = plugin.getDataFolder();
-		String[] filenames = folder.list();
-		File schematicFile;
-		Schematic schematic;
-		for(String name : filenames) {
-			if(name.endsWith(".schematic")) {
-				schematicFile = new File(plugin.getDataFolder() + File.separator + name);
-				try {
-					schematic = SchematicUtils.loadSchematic(schematicFile);
-					structures.put(name.substring(0, name.lastIndexOf('.')), schematic);
-				} catch (IOException e) {
-					plugin.getServer().getLogger().warning("Fehler beim laden von " + schematicFile.getAbsolutePath());
-					e.printStackTrace();
-					continue;
-				}
-			}
+			RecipeLoadException ex = new RecipeLoadException("Error while loading Recipe " + name + "from config.yml");
+			throw ex;
 		}
 	}
 	
-	public static Schematic getStructureForName(String name) {
-		return structures.get(name);
+	class RecipeLoadException extends Exception{
+		private static final long serialVersionUID = 6304953078558085195L;
+
+		public RecipeLoadException(String message) {
+			super(message);
+		}
 	}
-
-
-
+	
+	public Schematic getSchematic() {
+		return schematic;
+	}
+	
 	@SuppressWarnings("deprecation")
-	static public boolean lookForStructure(Location pos, Schematic struct) {
+	public boolean lookForStructure(Location pos) {
 		Location origin = new Location(pos.getWorld(), pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
+		Schematic struct = this.getSchematic();
 		origin = origin.add(struct.getOffset());
 		Location temp;
 		int index;
@@ -106,4 +64,31 @@ public class CraftingStructure {
 		}	
 		return true;
 	}
+
+
+	
+	
+
+	public static void loadStructures(Plugin plugin) {
+		File folder = plugin.getDataFolder();
+		String[] filenames = folder.list();
+		CraftingStructure struct;
+		for(String name : filenames) {
+			if(name.endsWith(".schematic")) {
+				try {
+					struct = new CraftingStructure(name, plugin);
+					structures.put(name.substring(0, name.lastIndexOf('.')), struct);
+				} catch (RecipeLoadException e) {
+					plugin.getLogger().warning(e.getMessage());
+				}
+				
+			}
+		}
+	}
+	
+	public static CraftingStructure getStructureForName(String name) {
+		return structures.get(name);
+	}
+	
+	
 }
