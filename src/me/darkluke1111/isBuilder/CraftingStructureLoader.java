@@ -22,10 +22,10 @@ import org.jnbt.Tag;
  * @author Lukas
  *
  */
-public class StructureLoader {
+public class CraftingStructureLoader {
 	Plugin plugin;
 
-	public StructureLoader(Plugin plugin) {
+	public CraftingStructureLoader(Plugin plugin) {
 		this.plugin = plugin;
 	}
 

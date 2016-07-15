@@ -12,7 +12,7 @@ public class IsBuilder extends JavaPlugin {
 
 	RecipeManager rm;
 	RecipeLoader rl;
-	StructureLoader sl;
+	CraftingStructureLoader sl;
 
 	@Override
 	public void onEnable() {
@@ -22,7 +22,7 @@ public class IsBuilder extends JavaPlugin {
 		
 
 		rl = new RecipeLoader(getConfig());
-		sl = new StructureLoader(this);
+		sl = new CraftingStructureLoader(this);
 		rm = new RecipeManager(this);
 		
 		rm.addStructures(sl.loadStructures());
