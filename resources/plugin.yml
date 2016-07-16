@@ -5,5 +5,8 @@ author: Darkluke1111
 main: me.darkluke1111.isBuilder.IsBuilder
 
 commands:
+  openInv:
+    description: test
+    usage: \<command>
 
 permissions:
