@@ -10,6 +10,17 @@ recipes:
       - Lvl1
       - Lvl2
 
+  Kekse:
+    resultMat: COBBLESTONE:0
+    resultAmount: 1
+    craftPattern: "XXX-XXX-XXX"
+    ingredients:
+      X: STONE:0
+    craftStructNames:
+      - Lvl0
+      - Lvl1
+      - Lvl2
+
   Granite:
     resultMat: STONE:1
     resultAmount: 1

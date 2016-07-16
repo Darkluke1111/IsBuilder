@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -93,8 +94,13 @@ public class AdvancedRecipe {
 	    AdvancedRecipe rRecipe = (AdvancedRecipe) rSide;
 	    if(!IsBuilderUtils.recipiesAreEqual(this.getRecipe(), rRecipe.getRecipe())) return false;
 	    
-	    if(!getStructNames().equals(rRecipe.getStructNames())) return false;
+	    //if(!getStructNames().equals(rRecipe.getStructNames())) return false;
 	    
         return true;    
+	}
+	
+	@Override
+	public int hashCode() {
+	    return new HashCodeBuilder(5,11).append(recipe.getIngredientMap()).append(recipe.getShape()).toHashCode();
 	}
 }

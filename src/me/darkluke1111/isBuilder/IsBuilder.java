@@ -2,6 +2,7 @@ package me.darkluke1111.isBuilder;
 
 import java.io.File;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,7 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  */
 public class IsBuilder extends JavaPlugin {
-
+    Material mat = Material.COBBLESTONE;
 	RecipeManager rm;
 	RecipeLoader rl;
 	CraftingStructureLoader sl;

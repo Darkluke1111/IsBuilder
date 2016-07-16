@@ -60,10 +60,13 @@ public class RecipeManager implements Listener {
 	 * @param set
 	 */
 	public void addRecipes(Set<AdvancedRecipe> set) {
-		for (AdvancedRecipe aRecipe : set) {
+	    for(AdvancedRecipe aRecipe : set) {
+	        aRecipe.getRecipe().getResult().getType().toString();
+	        recipes.add(aRecipe);
+	        
 			Bukkit.getServer().addRecipe(aRecipe.getRecipe());
 		}
-		recipes.addAll(set);
+		
 	}
 
 	/**
