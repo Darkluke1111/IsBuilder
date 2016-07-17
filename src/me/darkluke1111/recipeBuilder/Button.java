@@ -1,15 +1,14 @@
 package me.darkluke1111.recipeBuilder;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 public class Button extends MenuItem{
        
-	List<ButtonAction> actions;
-    public Button(Material pic, byte data, String displayName, String description, View containingView, List<ButtonAction> actions) {
+	ButtonAction action;
+    public Button(Material pic, byte data, String displayName, String description, View containingView, ButtonAction action) {
         super(pic, data, displayName, description, containingView, false);
+        this.action = action;
     }
     
     public void pressed() {
@@ -21,7 +20,7 @@ public class Button extends MenuItem{
 
 enum ButtonAction {
 	SWITCH_VIEW,
-	SAVE_CONFIG,
+	SAVE_RECIPE,
 	CLOSE_MENU;
 }
 

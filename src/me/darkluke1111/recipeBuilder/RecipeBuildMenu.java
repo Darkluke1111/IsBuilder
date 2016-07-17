@@ -46,10 +46,12 @@ public class RecipeBuildMenu implements Listener{
         activeView.handleClick(e);
     }
     
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onButtonClick(ButtonPressedEvent e) {
-    	if(e.getButton().actions.get(0) == ButtonAction.SAVE_CONFIG) {
-    		//TODO
+    	if(e.getButton().action == ButtonAction.SAVE_RECIPE) {
+    		if(!(activeView instanceof RecipeBuildView)) return;
+    		RecipeBuildView view = (RecipeBuildView) activeView;
+    		
     	}
     }
 }

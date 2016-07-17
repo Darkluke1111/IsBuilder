@@ -7,6 +7,9 @@ import org.bukkit.inventory.ItemStack;
 public class View {
 
 	private MenuItem[] items = new MenuItem[RecipeBuildMenu.INV_SIZE];
+	private int maxSlots = RecipeBuildMenu.INV_SIZE;
+	private int maxRows = RecipeBuildMenu.INV_SIZE/9;
+	private int maxColumns = 9;
 
 	public View setItem(int slot, MenuItem item) {
 		if (slot < RecipeBuildMenu.INV_SIZE)
@@ -20,7 +23,7 @@ public class View {
 	}
 
 	public View setItem(int row, int column, MenuItem item) {
-		int slot = row * 9 + column;
+		int  slot = getSlot(row, column);
 		setItem(slot, item);
 		return this;
 	}
@@ -61,5 +64,18 @@ public class View {
 	
 	public void setMenuItemAtSlot(int slot, MenuItem item) {
 
+	}
+	
+	public MenuItem getItem(int slot) {
+		return items[slot];
+	}
+	
+	public MenuItem getItem(int row, int column) {
+		int slot = getSlot(row, column);
+		return getItem(slot);
+	}
+	
+	public int getSlot(int row, int column) {
+		return row * 9 + column;
 	}
 }

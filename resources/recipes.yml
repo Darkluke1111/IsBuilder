@@ -1,7 +1,7 @@
 recipes:
   Diorite:
     resultMat: STONE:5
-    resultAmount: 1
+    resultAmount: 3
     craftPattern: "XXX-XXX-XXX"
     ingredients:
       X: STONE:0
