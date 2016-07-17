@@ -53,7 +53,7 @@ public class IsBuilder extends JavaPlugin {
 	    if(cmd.getName().equalsIgnoreCase("openInv")) {
 	        if(!(sender instanceof Player)) return true;
 	        Player p = (Player) sender;
-	        RecipeBuildMenu rbm = new RecipeBuildMenu();
+	        RecipeBuildMenu rbm = new RecipeBuildMenu(this);
 	        rbm.open(p);
 
 	    }

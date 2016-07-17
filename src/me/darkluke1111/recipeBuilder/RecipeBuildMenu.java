@@ -5,9 +5,12 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.Plugin;
 
 public class RecipeBuildMenu implements Listener{
     
@@ -17,7 +20,8 @@ public class RecipeBuildMenu implements Listener{
     private View activeView;
     private Map<String,View> views = new HashMap<>();
     
-    public RecipeBuildMenu() {
+    public RecipeBuildMenu(Plugin plugin) {
+    	Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
 		views.put("Build", new RecipeBuildView());
 	}
     
@@ -35,10 +39,17 @@ public class RecipeBuildMenu implements Listener{
         activeView = view;
     }
     
+    @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         if(!e.getInventory().equals(inv)) return;
         if(!(e.getWhoClicked() instanceof Player)) return;
-        Player p = (Player) e.getWhoClicked();
-        activeView.handleClick(e.getSlot(), p);
+        activeView.handleClick(e);
+    }
+    
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onButtonClick(ButtonPressedEvent e) {
+    	if(e.getButton().actions.get(0) == ButtonAction.SAVE_CONFIG) {
+    		//TODO
+    	}
     }
 }

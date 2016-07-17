@@ -1,7 +1,7 @@
 package me.darkluke1111.recipeBuilder;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class View {
@@ -10,6 +10,7 @@ public class View {
 
 	public View setItem(int slot, MenuItem item) {
 		if (slot < RecipeBuildMenu.INV_SIZE)
+			item.setSlot(slot);
 			items[slot] = item;
 		return this;
 	}
@@ -27,7 +28,7 @@ public class View {
 	public View setItemColumn(int column, MenuItem item) {
 		if (column < 9) {
 			for (int i = column; i < RecipeBuildMenu.INV_SIZE; i += 9) {
-				items[i] = item.copy();
+				setItem(i, item.copy());
 			}
 		}
 		return this;
@@ -36,14 +37,14 @@ public class View {
 	public View setItemRow(int row, MenuItem item) {
 		if (row < RecipeBuildMenu.INV_SIZE / 9) {
 			for (int i = 9 * row; i < 9 * row + 9; i++) {
-				items[i] = item.copy();
+				setItem(i, item.copy());
 			}
 		}
 		return this;
 	}
 
-	public void handleClick(int slot, Player p) {
-
+	public void handleClick(InventoryClickEvent e) {
+		if(items[e.getSlot()] != null) items[e.getSlot()].handleClick(e);	
 	}
 
 	public ItemStack[] getIcons() {
@@ -56,5 +57,9 @@ public class View {
 			}
 		}
 		return icons;
+	}
+	
+	public void setMenuItemAtSlot(int slot, MenuItem item) {
+
 	}
 }

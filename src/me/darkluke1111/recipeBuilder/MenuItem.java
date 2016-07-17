@@ -1,6 +1,7 @@
 package me.darkluke1111.recipeBuilder;
 
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -13,6 +14,7 @@ public class MenuItem {
     protected View containingView;
     protected ItemStack icon;
     protected boolean removable;
+    protected int slot;
  
     
     public MenuItem(Material pic, View containingView) {
@@ -21,7 +23,7 @@ public class MenuItem {
         this.displayName = "";
         this.description = "";
         this.containingView = containingView;
-        this.removable = true;
+        this.removable = false;
         buildIcon();
     }
     
@@ -31,7 +33,7 @@ public class MenuItem {
         this.displayName = "";
         this.description = "";
         this.containingView = containingView;
-        this.removable = true;
+        this.removable = false;
         buildIcon();
     }
     
@@ -75,9 +77,23 @@ public class MenuItem {
         return icon;
     }
     
+    public void handleClick(InventoryClickEvent e) {
+    	if(!isRemovable()) {
+    		e.setCancelled(true);
+    	}
+    }
+    
+    public boolean isRemovable() {
+    	return removable;
+    }
+    
     
     public MenuItem copy() {
         return new MenuItem(pic,data, displayName, description, containingView, removable);
+    }
+    
+    public void setSlot(int slot) {
+    	this.slot = slot;
     }
 }
 
