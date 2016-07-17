@@ -78,9 +78,9 @@ public class MenuItem {
     }
     
     public void handleClick(InventoryClickEvent e) {
-    	if(!isRemovable()) {
+//    	if(!isRemovable()) {
     		e.setCancelled(true);
-    	}
+//    	}
     }
     
     public boolean isRemovable() {
@@ -95,5 +95,13 @@ public class MenuItem {
     public void setSlot(int slot) {
     	this.slot = slot;
     }
+    
+	public void setMat(Material mat, byte data) {
+		this.pic = mat;
+		this.data = data;
+		this.icon = new ItemStack(mat,1,data);
+		//containingView.setItem(slot, this);
+		containingView.updateSlot(slot);
+	}
 }
 

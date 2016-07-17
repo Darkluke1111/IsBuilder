@@ -25,11 +25,15 @@ public class ButtonPressedEvent extends Event implements Cancellable{
         
     }
 
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-    
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
+
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
+  
     public Button getButton() {
     	return button;
     }

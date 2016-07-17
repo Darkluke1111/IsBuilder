@@ -26,6 +26,7 @@ public class AdvancedRecipe {
 
 	private ShapedRecipe recipe;
 	private Set<String> structNames;
+	private String name;
 
 	/**
 	 * Constructor builds Shapedrecipe and wraps it together with a list of
@@ -52,6 +53,7 @@ public class AdvancedRecipe {
 			recipe.setIngredient(entry.getKey(),new MaterialData(entry.getValue().mat,entry.getValue().data));
 		}
 		structNames = new HashSet<>(list);
+		this.name = name;
 
 	}
 
@@ -102,5 +104,9 @@ public class AdvancedRecipe {
 	@Override
 	public int hashCode() {
 	    return new HashCodeBuilder(5,11).append(recipe.getIngredientMap()).append(recipe.getShape()).toHashCode();
+	}
+	
+	public String getName() {
+		return name;
 	}
 }

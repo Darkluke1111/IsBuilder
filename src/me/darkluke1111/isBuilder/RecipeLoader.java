@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -144,5 +145,46 @@ public class RecipeLoader {
 			structs.add((String) obj);
 		}
 		return structs;
+	}
+	
+	public void writeRecipe(AdvancedRecipe recipe) {
+		prepareConfig();
+		if(!writeName(recipe.getName())) return;
+		writeResult(recipe);
+		
+	}
+	
+	public void prepareConfig() {
+		if(!config.isConfigurationSection("recipes")) {
+			config.createSection("recipes");
+		}
+	}
+	
+	public boolean writeName(String name) {
+		if(config.isString("recipes." + name)) return false;
+		config.createSection("recipes." + name);
+		return true;
+	}
+	
+	public void writeResult(AdvancedRecipe recipe) {
+		config.set("recipes." + recipe.getName() + ".resultMat", recipe.getRecipe().getResult().getType().toString());
+	}
+	
+	public void writeAmount(AdvancedRecipe recipe) {
+		config.set("recipes." + recipe.getName() + ".resultAmount", recipe.getRecipe().getResult().getAmount());
+	}
+	
+	public void writePattern(AdvancedRecipe recipe) {
+		String pattern;
+		pattern = StringUtils.join(recipe.getRecipe().getShape(),"-");
+		config.set("recipes." + recipe.getName() + ".resultPattern", pattern);
+	}
+	
+	public void writeIngridients(AdvancedRecipe recipe) {
+		config.createSection("recipes." + recipe.getName(), recipe.getRecipe().getIngredientMap());
+	}
+	
+	public void writeStructNames(AdvancedRecipe recipe) {
+		//TODO
 	}
 }
