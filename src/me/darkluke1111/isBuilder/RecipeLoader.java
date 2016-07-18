@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.material.MaterialData;
 
 /**
  * Class for loading advanced recipes from a .yml file, which must be provided
@@ -69,11 +70,11 @@ public class RecipeLoader {
 	 * @param name
 	 * @return
 	 */
-	public MaterialCompound getResultMat(String name) {
+	public MaterialData getResultMat(String name) {
 		String entry = config.getString("recipes." + name + ".resultMat");
 		String[] devided = entry.split(":");
 		
-		MaterialCompound mat = new MaterialCompound(Material.getMaterial(devided[0]), Byte.parseByte(devided[1]));
+		MaterialData mat = new MaterialData(Material.getMaterial(devided[0]), Byte.parseByte(devided[1]));
 		
 		// System.out.println(mat.toString());
 		return mat;
@@ -113,15 +114,15 @@ public class RecipeLoader {
 	 * @param name
 	 * @return
 	 */
-	public Map<Character, MaterialCompound> getIngredients(String name) {
-		Map<Character, MaterialCompound> ingredients = new HashMap<>();
+	public Map<Character, MaterialData> getIngredients(String name) {
+		Map<Character, MaterialData> ingredients = new HashMap<>();
 		Set<String> set = config.getConfigurationSection("recipes." + name + ".ingredients").getKeys(false);
 		for (String letter : set) {
 			String entry = config.getString("recipes." + name + ".ingredients." + letter);
 			
-			String[] devided = entry.split(":");			
-			MaterialCompound mat = new MaterialCompound(Material.getMaterial(devided[0]), Byte.parseByte(devided[1]));
-			ingredients.put(letter.charAt(0), mat);
+			String[] devided = entry.split(":");	
+			MaterialData md = new MaterialData(Material.getMaterial(devided[0]), Byte.parseByte(devided[1]));
+			ingredients.put(letter.charAt(0), md);
 		}
 		// System.out.println(ingredients.toString());
 		return ingredients;
@@ -151,6 +152,10 @@ public class RecipeLoader {
 		prepareConfig();
 		if(!writeName(recipe.getName())) return;
 		writeResult(recipe);
+		writeAmount(recipe);
+		writePattern(recipe);
+		writeIngridients(recipe);
+		writeStructNames(recipe);
 		
 	}
 	
@@ -185,6 +190,7 @@ public class RecipeLoader {
 	}
 	
 	public void writeStructNames(AdvancedRecipe recipe) {
-		//TODO
+		List<String> list = new ArrayList<>(recipe.getStructNames());
+		config.set("recipes" + recipe.getName() + "craftStructNames", list);
 	}
 }

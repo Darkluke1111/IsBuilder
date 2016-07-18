@@ -1,7 +1,18 @@
 package me.darkluke1111.recipeBuilder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import org.bukkit.Material;
-import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
+
+import me.darkluke1111.isBuilder.AdvancedRecipe;
 
 public class RecipeBuildView extends View {
 	
@@ -20,12 +31,47 @@ public class RecipeBuildView extends View {
         setItem(2,8, new Button(Material.REDSTONE_BLOCK,(byte) 0, "Accept", "Accepts the selection", this, ButtonAction.SAVE_RECIPE));
     }
     
-    public ShapedRecipe getRecipe() {
-    	ShapedRecipe recipe = new ShapedRecipe(resultItem.getConfigItemStack());
+    public AdvancedRecipe getRecipe() {
+    	//TODO syso
     	for(ConfigItem item : ingredientItems) {
     		System.out.println(item.getConfigItemStack().getType());
+    		
     	}
-    	return recipe;
+    	
+    	ItemStack result = resultItem.getConfigItemStack();
+    	Map<Character,MaterialData> map = new HashMap<>();
+    	String[] pattern = new String[3];
+    	
+    	Set<ItemStack> set = new HashSet<>();
+    	for(int i = 0 ; i < ingredientItems.length; i++) {
+    		set.add(ingredientItems[i].getConfigItemStack());
+    	}
+    	
+    	
+    	int i = (int) 'A';
+    	for(ItemStack stack : set) {
+    		map.put((char) i, stack.getData());
+    		i++;
+    	}
+    	
+    	
+    	for(int j = 0; j < pattern.length ; j ++) {
+    		pattern[j] = "";
+    	}
+    	
+    	for(int j = 0 ; j < ingredientItems.length; j++) {
+    		for(Entry<Character,MaterialData> entry : map.entrySet()) {
+    			if(!(entry.getValue().getItemType() == ingredientItems[j].getPic())) continue;
+    			if(!(entry.getValue().getData() == ingredientItems[j].getData())) continue;
+    			pattern[j/3] = pattern[j/3] + entry.getKey();
+    		}
+    	}
+
+    	String name = resultItem.getConfigItemStack().getType().toString() + ((int) (Math.random()*20));
+    	List<String> structureNames = new ArrayList<String>();
+    	structureNames.add("Lvl0");
+    	AdvancedRecipe aRecipe = new  AdvancedRecipe( name , result.getData() , 1, pattern, map, structureNames);
+    	return aRecipe;
     }
     
     public ConfigItem getResultItemStack() {

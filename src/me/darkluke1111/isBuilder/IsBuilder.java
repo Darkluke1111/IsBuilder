@@ -59,5 +59,13 @@ public class IsBuilder extends JavaPlugin {
 	    }
         return true;
 	}
+	
+	public RecipeManager getRm() {
+		return rm;
+	}
+	
+	public RecipeLoader getRl() {
+		return rl;
+	}
 
 }

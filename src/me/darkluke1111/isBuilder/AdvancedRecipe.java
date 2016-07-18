@@ -39,23 +39,24 @@ public class AdvancedRecipe {
 	 * @param ingredients
 	 * @param list
 	 */
-	AdvancedRecipe(String name, MaterialCompound resultMat, int amount, String[] pattern, Map<Character, MaterialCompound> ingredients,
+	public AdvancedRecipe(String name, MaterialData resultMat, int amount, String[] pattern, Map<Character, MaterialData> ingredients,
 			List<String> list) {
 
-		ItemStack result = new ItemStack(resultMat.mat,1,resultMat.data);
+		ItemStack result = new ItemStack(resultMat.getItemType(), resultMat.getData());
 		result = addLoreMarker(result);
 		recipe = new ShapedRecipe(result);
 		System.out.println(result.toString());
 
 		recipe.shape(pattern[0], pattern[1], pattern[2]);
 
-		for (Entry<Character, MaterialCompound> entry : ingredients.entrySet()) {
-			recipe.setIngredient(entry.getKey(),new MaterialData(entry.getValue().mat,entry.getValue().data));
+		for (Entry<Character, MaterialData> entry : ingredients.entrySet()) {
+			recipe.setIngredient(entry.getKey(), entry.getValue());
 		}
 		structNames = new HashSet<>(list);
 		this.name = name;
 
 	}
+	
 
 	/**
 	 * Returns the wraped ShapedRecipe

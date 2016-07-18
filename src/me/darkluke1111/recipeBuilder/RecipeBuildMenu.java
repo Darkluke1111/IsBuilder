@@ -6,12 +6,13 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.plugin.Plugin;
+
+import me.darkluke1111.isBuilder.AdvancedRecipe;
+import me.darkluke1111.isBuilder.IsBuilder;
 
 public class RecipeBuildMenu implements Listener{
     
@@ -20,10 +21,12 @@ public class RecipeBuildMenu implements Listener{
     private Inventory inv = Bukkit.createInventory(null, INV_SIZE, "RecipeBuilder");    
     private View activeView;
     private Map<String,View> views = new HashMap<>();
+    private IsBuilder plugin;
     
-    public RecipeBuildMenu(Plugin plugin) {
+    public RecipeBuildMenu(IsBuilder builder) {
     	Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
 		views.put("Build", new RecipeBuildView(this));
+		this.plugin = builder;
 	}
     
     public void open(Player p) {
@@ -62,8 +65,8 @@ public class RecipeBuildMenu implements Listener{
     	if(e.getButton().action == ButtonAction.SAVE_RECIPE) {
     		if(!(activeView instanceof RecipeBuildView)) return;
     		RecipeBuildView view = (RecipeBuildView) activeView;
-    		view.getRecipe();
-    		
+    		AdvancedRecipe recipe= view.getRecipe();
+    		plugin.getRl().writeRecipe(recipe);
     	}
     }
 }

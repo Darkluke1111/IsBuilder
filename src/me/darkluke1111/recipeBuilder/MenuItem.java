@@ -61,6 +61,10 @@ public class MenuItem {
         return pic;
     }
     
+    public byte getData() {
+		return data;
+	}
+    
     public String getDisplayName() {
         return displayName;
     }
