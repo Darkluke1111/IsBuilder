@@ -66,7 +66,8 @@ public class RecipeBuildMenu implements Listener{
     		if(!(activeView instanceof RecipeBuildView)) return;
     		RecipeBuildView view = (RecipeBuildView) activeView;
     		AdvancedRecipe recipe= view.getRecipe();
-    		plugin.getRl().writeRecipe(recipe);
+    		//plugin.getRl().writeRecipe(recipe);
+    		//TODO
     	}
     }
 }

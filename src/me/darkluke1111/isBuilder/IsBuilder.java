@@ -1,16 +1,16 @@
 package me.darkluke1111.isBuilder;
 
 import java.io.File;
+import java.util.Iterator;
 
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import me.darkluke1111.recipeBuilder.RecipeBuildMenu;
 
 /**
  * Main plugin class
@@ -26,11 +26,15 @@ public class IsBuilder extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		ConfigurationSerialization.registerClass(AdvancedRecipe.class,"AdvancedRecipe");
 		getConfig().options().copyDefaults(true);
 		this.saveConfig();
 		
+		
+		
 		saveResource("recipes.yml",false);
 		FileConfiguration recipeConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "recipes.yml"));
+
 		
 		IsBuilderUtils.unpackSchematics(this);
 		
@@ -40,7 +44,17 @@ public class IsBuilder extends JavaPlugin {
 		
 		rm.addStructures(sl.loadStructures());
 		rm.addRecipes(rl.loadRecipes());
-
+		
+		Iterator<AdvancedRecipe> it = rm.getRecipes().iterator();
+		getConfig().set("recipes", it.next());
+		saveConfig();
+		reloadConfig();
+		System.out.println(getConfig().getConfigurationSection("recipes"));
+		System.out.println(getConfig().getValues(false));
+		AdvancedRecipe recipe = (AdvancedRecipe) getConfig().get("recipes");
+		System.out.println(recipe);
+		getConfig().set("new",recipe);
+		saveConfig();
 	}
 	
 	@Override
@@ -52,9 +66,9 @@ public class IsBuilder extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	    if(cmd.getName().equalsIgnoreCase("openInv")) {
 	        if(!(sender instanceof Player)) return true;
-	        Player p = (Player) sender;
-	        RecipeBuildMenu rbm = new RecipeBuildMenu(this);
-	        rbm.open(p);
+//	        Player p = (Player) sender;
+//	        RecipeBuildMenu rbm = new RecipeBuildMenu(this);
+//	        rbm.open(p);
 
 	    }
         return true;

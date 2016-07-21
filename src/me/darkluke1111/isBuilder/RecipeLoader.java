@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.material.MaterialData;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Class for loading advanced recipes from a .yml file, which must be provided
@@ -148,7 +149,7 @@ public class RecipeLoader {
 		return structs;
 	}
 	
-	public void writeRecipe(AdvancedRecipe recipe) {
+	public void writeRecipe(AdvancedRecipe recipe, Plugin p) {
 		prepareConfig();
 		if(!writeName(recipe.getName())) return;
 		writeResult(recipe);
@@ -156,6 +157,7 @@ public class RecipeLoader {
 		writePattern(recipe);
 		writeIngridients(recipe);
 		writeStructNames(recipe);
+		
 		
 	}
 	

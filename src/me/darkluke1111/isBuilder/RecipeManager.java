@@ -43,6 +43,10 @@ public class RecipeManager implements Listener {
 	public RecipeManager(Plugin plugin) {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
+	
+	public Set<AdvancedRecipe> getRecipes() {
+		return recipes;
+	}
 
 	/**
 	 * Unregisters all EventHandlers in the instance. Should be called when the
@@ -122,7 +126,7 @@ public class RecipeManager implements Listener {
 	 */
 	public boolean matchCraftingStructures(AdvancedRecipe aRecipe, Location pos) {
 		for (String structName : aRecipe.getStructNames()) {
-		    System.out.println(getStructureForName(structName));
+		    //System.out.println(getStructureForName(structName));
 			if (getStructureForName(structName).lookForStructure(pos)) {
 				return true;
 			}
