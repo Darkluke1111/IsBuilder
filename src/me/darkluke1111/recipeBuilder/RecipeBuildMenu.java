@@ -9,6 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 
 import me.darkluke1111.isBuilder.AdvancedRecipe;
@@ -24,7 +26,7 @@ public class RecipeBuildMenu implements Listener{
     private IsBuilder plugin;
     
     public RecipeBuildMenu(IsBuilder builder) {
-    	Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
+    	Bukkit.getServer().getPluginManager().registerEvents(this, builder);
 		views.put("Build", new RecipeBuildView(this));
 		this.plugin = builder;
 	}
@@ -51,11 +53,13 @@ public class RecipeBuildMenu implements Listener{
     public void onInventoryClick(InventoryClickEvent e) {
     	System.out.println(e.getRawSlot());
         if(!e.getInventory().equals(inv)) return;
-        if(!(e.getClick()== ClickType.LEFT) && !(e.getClick() == ClickType.RIGHT)) {
+        e.setCancelled(true);
+		if(e.getRawSlot() >= INV_SIZE) return;
+        if(!(e.getClick() == ClickType.MIDDLE)) {
         	e.setCancelled(true);
         	return;
         }
-		if(e.getRawSlot() >= INV_SIZE) return;
+
         if(!(e.getWhoClicked() instanceof Player)) return;
         activeView.handleClick(e);
     }
@@ -66,7 +70,8 @@ public class RecipeBuildMenu implements Listener{
     		if(!(activeView instanceof RecipeBuildView)) return;
     		RecipeBuildView view = (RecipeBuildView) activeView;
     		AdvancedRecipe recipe= view.getRecipe();
-    		//plugin.getRl().writeRecipe(recipe);
+    		plugin.getConfig().set("built", recipe);
+    		plugin.saveConfig();
     		//TODO
     	}
     }

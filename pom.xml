@@ -49,6 +49,11 @@
          <artifactId>bukkit</artifactId>
          <version>1.8.8-R0.1-SNAPSHOT</version>
          <scope>provided</scope>
+    </dependency>   
+    <dependency>
+        <groupId>com.ColonelHedgehog</groupId>
+        <artifactId>MenuAPI</artifactId>
+        <version>1.3-SNAPSHOT</version>
     </dependency>
 </dependencies>
 

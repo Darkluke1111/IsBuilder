@@ -1,6 +1,7 @@
 package me.darkluke1111.recipeBuilder;
 
 import org.bukkit.Material;
+import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

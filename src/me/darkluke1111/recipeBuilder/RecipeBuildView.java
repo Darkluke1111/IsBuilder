@@ -34,17 +34,17 @@ public class RecipeBuildView extends View {
     public AdvancedRecipe getRecipe() {
     	//TODO syso
     	for(ConfigItem item : ingredientItems) {
-    		System.out.println(item.getConfigItemStack().getType());
+    		System.out.println(item.getIcon().getType());
     		
     	}
     	
-    	ItemStack result = resultItem.getConfigItemStack();
+    	ItemStack result = resultItem.getIcon();
     	Map<Character,MaterialData> map = new HashMap<>();
     	String[] pattern = new String[3];
     	
     	Set<ItemStack> set = new HashSet<>();
     	for(int i = 0 ; i < ingredientItems.length; i++) {
-    		set.add(ingredientItems[i].getConfigItemStack());
+    		set.add(ingredientItems[i].getIcon());
     	}
     	
     	
@@ -67,7 +67,7 @@ public class RecipeBuildView extends View {
     		}
     	}
 
-    	String name = resultItem.getConfigItemStack().getType().toString() + ((int) (Math.random()*20));
+    	String name = resultItem.getIcon().getType().toString() + ((int) (Math.random()*20));
     	List<String> structureNames = new ArrayList<String>();
     	structureNames.add("Lvl0");
     	AdvancedRecipe aRecipe = new  AdvancedRecipe( name , result.getData() , 1, pattern, map, structureNames);

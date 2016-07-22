@@ -8,5 +8,8 @@ commands:
   openInv:
     description: test
     usage: \<command>
+  updateInv:
+    description: for test porpuses
+    usage: \<command> player
 
 permissions:

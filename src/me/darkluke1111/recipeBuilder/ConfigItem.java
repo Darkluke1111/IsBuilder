@@ -11,10 +11,6 @@ public class ConfigItem extends MenuItem {
 		removable = false;
 	}
 	
-	public ItemStack getConfigItemStack() {
-		return containingView.getIcons()[slot];
-	}
-	
 	@Override
 	public void handleClick(InventoryClickEvent e) {
 		super.handleClick(e);
